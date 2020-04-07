@@ -13,10 +13,15 @@ public class GollemScript : MonoBehaviour {
 
   public int Sides;
   public Material Texture;
-  private List<GameObject> GolemPieces;
+  public List<GameObject> GolemPieces;
+  public int ObjCount = 0;
+  //public int ObjFillIndex = 0;
+  //public float ObjFillPct = 0f;
+
   // Start is called before the first frame update
-  public Color StartColor = Color.white;
-  public Color EndColor = Color.green;
+  //public Color StartColor = Color.white;
+  //public Color EndColor = Color.green;
+
   [Range(0.1f, 1.0f)]
   public float ColorSpeed = 0.1f;
   private float StartTime;
@@ -24,12 +29,11 @@ public class GollemScript : MonoBehaviour {
   void Start() {
     GolemPieces = new List<GameObject>();
     GenerateMesh();
-
+    ObjCount = GolemPieces.Count;
     StartTime = Time.time;
   }
 
   private void Update() {
-    ChangeColor();
   }
 
   public void GenerateMesh() {
@@ -68,13 +72,22 @@ public class GollemScript : MonoBehaviour {
   }
 
 
-  void ChangeColor() {
-    float T = (Time.time - StartTime) * ColorSpeed;
-    foreach (GameObject Obj in GolemPieces) {
-      Obj.GetComponent<Renderer>().material.color = Color.Lerp(StartColor, EndColor, T);
+  /*
+  public void ChangeColor(float T) {
+    Debug.Log(T);
+    if (ObjFillPct >= 1.0f) {
+      // temp to prevent nullreference
+      if (ObjFillIndex != ObjCount) {
+        Debug.Log(T);
+        ObjFillIndex++;
+      }
+      ObjFillPct = 0f;
     }
-   
+    ObjFillPct = T;
+    GolemPieces[ObjFillIndex].GetComponent<Renderer>().material.color = Color.Lerp(StartColor, EndColor, ObjFillPct);
+
   }
+    */
 
 
 }
