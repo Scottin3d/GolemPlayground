@@ -1,7 +1,6 @@
-# Coding Adventure - Object Generation
+# Coding Adventure
 
 ## Place holder for gif  
-![Alt Text](https://imgur.com/IlbaBKO)
 
 ## Overview  
 The player is a golem that rolls around the level trying to cover itself in moss before the other players.  This is a development log for the player creation using a script and
@@ -11,7 +10,7 @@ the player controller.  A golem is a rock-troll like creature.  Various versions
 <img src="https://pokemon.gameinfo.io/images/pokemon-go/076-00.png" alt="Pokemon Golem" width="200"/>
 <img src="https://www.gamehiker.com/wiki/images/thumb/f/f1/Goron.jpg/200px-Goron.jpg" alt="Goron Legend of Zelda" width="200"/>
 
-## Process
+## Player Generation
 
 ### Generating the basic player
 
@@ -30,7 +29,6 @@ In order to get the spawn vertices for the instantiated objects, first I needed 
 ```
 
 ### Instantiated Prefab 
-<img src="https://imgur.com/8jbq9SO"/>  
 
 After getting a list of vertices, I could now loop through them and instantiate an object at each point.  I ran into a couple errors, but I quickly figured out what was happening.  
 
@@ -72,6 +70,37 @@ GolInstance.GetComponent<MeshRenderer>().material = Texture;
 	
 ```
 
-## Conclusion 
+## Game Logic  
 
-TBD  
+### Color Change  
+The objective of the game is to roll around and collect moss on you player.  To protoype a simplistic version of the mechanic, I just kept track of a float and incremented when the player pressed WASD.  
+
+```C#
+if (Input.GetKey(KeyCode.W)) {
+  FillLevel += FillSpeed;
+  UpdateColor();
+}
+```
+At first, it changed all of the objects at once.  In order to only change one at a time, I needed to keep track of the number of instances and the current index.  
+```C# 
+void UpdateColor() {
+  ObjCount = GScript.ObjCount;
+  if (FillLevel >= 1.0f) {
+    ObjFillIndex++;
+    FillLevel = 0f;
+  }
+  GScript.GolemPieces[ObjFillIndex].GetComponent<Renderer>().material.color = Color.Lerp(StartColor, EndColor, FillLevel);
+ }
+ ```
+ 
+ As another game play mechanic, the player will be able to jump and when they land, send a shockwave out that will effect other players.  This however comes at a cost.
+ Each jump will cost the player a certain amount of their collected moss (about one stone worth).  
+ ```C#
+if (Input.GetKeyDown(KeyCode.Space)) {
+  FillLevel -= JumpCost;
+  UpdateColor();
+  ObjFillIndex--;
+}
+```
+
+## Conclusion 
