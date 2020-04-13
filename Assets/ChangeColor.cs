@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class ChangeColor : MonoBehaviour {
   GollemScript GScript;
+  int ObjCount = 0;
+  int ObjFillIndex = 0;
+
+  public MossProgress MP;
+
   public Color StartColor = Color.white;
   public Color EndColor = Color.green;
 
@@ -11,14 +16,11 @@ public class ChangeColor : MonoBehaviour {
   public float FillLevel = 0f;
   public float JumpCost = 0.2f;
 
-  public int ObjCount = 0;
-  public int ObjFillIndex = 0;
-  public float ObjFillPct = 0f;
-
   // Start is called before the first frame update
   void Start() {
     GScript = this.GetComponent<GollemScript>();
-    
+    ObjCount = GScript.GetSize();
+    MP.SetMaxValue(ObjCount);
   }
 
   // Update is called once per frame
@@ -47,8 +49,7 @@ public class ChangeColor : MonoBehaviour {
   }
 
   void UpdateColor() {
-    Debug.Log(FillLevel);
-    ObjCount = GScript.ObjCount;
+    
     if (FillLevel >= 1.0f) {
       // temp to prevent nullreference
       if (ObjFillIndex <= ObjCount) {
@@ -58,6 +59,9 @@ public class ChangeColor : MonoBehaviour {
       FillLevel = 0f;
     }
     GScript.GolemPieces[ObjFillIndex].GetComponent<Renderer>().material.color = Color.Lerp(StartColor, EndColor, FillLevel);
+    MP.GrowProgressBar(ObjFillIndex);
   }
+
+  
 
 }

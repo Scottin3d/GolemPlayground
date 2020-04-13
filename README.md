@@ -105,4 +105,7 @@ if (Input.GetKeyDown(KeyCode.Space)) {
 }
 ```
 
+TODO: 
+1. Random stones fill, not in generated order.  
+2. If a player hits an object with enough force, they'll lose moss.  
 ## Conclusion 

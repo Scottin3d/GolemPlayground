@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using System.Linq;
 
 public class GollemScript : MonoBehaviour {
 
@@ -10,27 +11,16 @@ public class GollemScript : MonoBehaviour {
 
   [Range(0.1f, 1.0f)]
   public float ObjectSize = 0.7f;
-
-  public int Sides;
+  
   public Material Texture;
   public List<GameObject> GolemPieces;
-  public int ObjCount = 0;
-  //public int ObjFillIndex = 0;
-  //public float ObjFillPct = 0f;
-
-  // Start is called before the first frame update
-  //public Color StartColor = Color.white;
-  //public Color EndColor = Color.green;
-
-  [Range(0.1f, 1.0f)]
-  public float ColorSpeed = 0.1f;
-  private float StartTime;
+ 
+  private int ObjCount = 0;
 
   void Start() {
     GolemPieces = new List<GameObject>();
     GenerateMesh();
     ObjCount = GolemPieces.Count;
-    StartTime = Time.time;
   }
 
   private void Update() {
@@ -61,6 +51,7 @@ public class GollemScript : MonoBehaviour {
 
       // add instance to list
       GolemPieces.Add(GolInstance);
+      GolemPieces = Randomize(GolemPieces);
     }
   }
 
@@ -71,23 +62,26 @@ public class GollemScript : MonoBehaviour {
     }
   }
 
-
-  /*
-  public void ChangeColor(float T) {
-    Debug.Log(T);
-    if (ObjFillPct >= 1.0f) {
-      // temp to prevent nullreference
-      if (ObjFillIndex != ObjCount) {
-        Debug.Log(T);
-        ObjFillIndex++;
-      }
-      ObjFillPct = 0f;
-    }
-    ObjFillPct = T;
-    GolemPieces[ObjFillIndex].GetComponent<Renderer>().material.color = Color.Lerp(StartColor, EndColor, ObjFillPct);
-
+  // get the number of instances in player
+  public int GetSize() {
+    return ObjCount;
   }
-    */
+
+  List<GameObject> Randomize(List<GameObject> List) {
+    List<GameObject> RandomList = new List<GameObject>();
+    bool[] Switch = new bool[List.Count];
+    bool Complete = false;
+
+    while (!Complete) {
+      int Rand = Random.Range(0, ObjCount);
+      if (!Switch[Rand]) {
+        RandomList.Add(List[Rand]);
+        Switch[Rand] = true;
+      }
+      Switch.All(x => x);
+    }
 
 
+    return RandomList;
+  }
 }
