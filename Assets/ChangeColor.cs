@@ -49,10 +49,9 @@ public class ChangeColor : MonoBehaviour {
   }
 
   void UpdateColor() {
-    
     if (FillLevel >= 1.0f) {
       // temp to prevent nullreference
-      if (ObjFillIndex <= ObjCount) {
+      if (ObjFillIndex < ObjCount) {
         Debug.Log(ObjFillIndex);
         ObjFillIndex++;
       }
@@ -61,7 +60,4 @@ public class ChangeColor : MonoBehaviour {
     GScript.GolemPieces[ObjFillIndex].GetComponent<Renderer>().material.color = Color.Lerp(StartColor, EndColor, FillLevel);
     MP.GrowProgressBar(ObjFillIndex);
   }
-
-  
-
 }

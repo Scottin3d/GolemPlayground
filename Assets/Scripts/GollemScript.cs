@@ -11,10 +11,10 @@ public class GollemScript : MonoBehaviour {
 
   [Range(0.1f, 1.0f)]
   public float ObjectSize = 0.7f;
-  
+
   public Material Texture;
   public List<GameObject> GolemPieces;
- 
+
   private int ObjCount = 0;
 
   void Start() {
@@ -51,7 +51,6 @@ public class GollemScript : MonoBehaviour {
 
       // add instance to list
       GolemPieces.Add(GolInstance);
-      GolemPieces = Randomize(GolemPieces);
     }
   }
 
@@ -68,17 +67,31 @@ public class GollemScript : MonoBehaviour {
   }
 
   List<GameObject> Randomize(List<GameObject> List) {
+    Debug.Log("Starting Randomization");
     List<GameObject> RandomList = new List<GameObject>();
     bool[] Switch = new bool[List.Count];
     bool Complete = false;
+    int count = 0;
+
+    Debug.Log(List.Count + " instance objects");
 
     while (!Complete) {
       int Rand = Random.Range(0, ObjCount);
+      Debug.Log("Trying index " + Rand);
       if (!Switch[Rand]) {
+        Debug.Log("Placing in new List");
+
         RandomList.Add(List[Rand]);
         Switch[Rand] = true;
+      } else {
+        Debug.Log("Already in List");
+
       }
-      Switch.All(x => x);
+      Complete = Switch.All(x => x);
+      count++;
+      if (count >= 1000) {
+        break;
+      }
     }
 
 

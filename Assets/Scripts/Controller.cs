@@ -25,11 +25,6 @@ public class Controller : MonoBehaviour
 
   private void Update() {
     Jump();
-    /*
-    if (Input.GetKeyDown(KeyCode.Space)) {
-      RB.AddForce(Vector3.up * JumpHeight * 1000);
-    }
-    */
   }
 
   void Jump() {
