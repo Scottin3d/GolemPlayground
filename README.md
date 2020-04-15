@@ -13,7 +13,7 @@ the player controller.  A golem is a rock-troll like creature.  Various versions
 <img src="https://www.gamehiker.com/wiki/images/thumb/f/f1/Goron.jpg/200px-Goron.jpg" alt="Goron Legend of Zelda" width="200"/>
 
 ## Links
-You can follow progress in more detail on my website: scottshirley.dev
+You can follow progress in more detail on my website: https://scottshirley.dev
 
 ### EZ-Camera-Shake
 https://github.com/andersonaddo/EZ-Camera-Shake-Unity
