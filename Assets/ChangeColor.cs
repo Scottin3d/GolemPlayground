@@ -52,22 +52,29 @@ public class ChangeColor : MonoBehaviour {
   void UpdateColor() {
     if (FillLevel >= 1.0f) {
       // temp to prevent nullreference
-      if (ObjFillIndex < ObjCount) {
+      if (ObjFillIndex < ObjCount - 1) {
         Debug.Log(ObjFillIndex);
         ObjFillIndex++;
+      } else {
+        ObjFillIndex = ObjCount - 1;
+        Debug.Log("Player won!");
+        return;
       }
       FillLevel = 0f;
     }
     GScript.GolemPieces[ObjFillIndex].GetComponent<Renderer>().material.color = Color.Lerp(StartColor, EndColor, FillLevel);
-    MP.GrowProgressBar(ObjFillIndex);
+    MP.GrowProgressBar(ObjFillIndex + 1);
   }
 
   public void HitByPlayer() {
     Debug.Log("Player Hit!");
     int NewFillIndex = ObjFillIndex - PlayerHitPenalty;
+    Debug.Log(NewFillIndex);
+
     while (ObjFillIndex > NewFillIndex && ObjFillIndex >= 0) {
       GScript.GolemPieces[ObjFillIndex].GetComponent<Renderer>().material.color = StartColor;
       ObjFillIndex--;
+      MP.GrowProgressBar(ObjFillIndex + 1);
     }
 
     FillLevel = 0f;

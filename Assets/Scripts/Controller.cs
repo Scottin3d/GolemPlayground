@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using EZCameraShake;
 
 public class Controller : MonoBehaviour
 {
@@ -36,28 +37,34 @@ public class Controller : MonoBehaviour
     
     // rotation
     if (Input.GetKey(KeyCode.Q)) {
-      transform.Rotate(Vector3.up * RotationSpeed * Time.deltaTime);
+      transform.Rotate(Vector3.up * -RotationSpeed * Time.deltaTime);
+      Camera.transform.RotateAround(transform.position, Vector3.up, -RotationSpeed * Time.deltaTime);
     }
     if (Input.GetKey(KeyCode.E)) {
-      transform.Rotate(Vector3.up * -RotationSpeed * Time.deltaTime);
+      transform.Rotate(Vector3.up * RotationSpeed * Time.deltaTime);
+      Camera.transform.RotateAround(transform.position, Vector3.up, RotationSpeed * Time.deltaTime);
+
     }
+
 
 
   }
 
   private void Update() {
-    Jump();
+    // jump
+    if (Input.GetKeyDown(KeyCode.Space) && IsGrounded) {
+      Jump();
+    }
     Magnitude = RB.velocity.magnitude;
     if (Magnitude > MaxSpeed) {
       RB.velocity = Vector3.ClampMagnitude(RB.velocity, MaxSpeed);
     }
+
   }
 
   void Jump() {
-    if (Input.GetKeyDown(KeyCode.Space) && IsGrounded) {
-      RB.AddForce(Vector3.up * JumpHeight * 1000);
-      IsGrounded = false;
-    }
+    RB.AddForce(Vector3.up * JumpHeight * 1000);
+    IsGrounded = false;
   }
 
   private void OnCollisionEnter(Collision collision) {
@@ -70,7 +77,7 @@ public class Controller : MonoBehaviour
     // hits another player
     if (collision.gameObject.tag == "Player") {
       CC.HitByPlayer();
-      StartCoroutine(Camera.GetComponent<CameraShake>().Shake(.2f, RB.velocity.magnitude * 0.2f));
+      CameraShaker.Instance.ShakeOnce(4f * RB.velocity.magnitude, 4f, .1f, 1f * RB.velocity.magnitude / 2);
     }
 
 
