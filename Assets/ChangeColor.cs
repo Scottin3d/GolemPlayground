@@ -15,6 +15,7 @@ public class ChangeColor : MonoBehaviour {
   public float FillSpeed = 0.005f;
   public float FillLevel = 0f;
   public float JumpCost = 0.2f;
+  public int PlayerHitPenalty = 1;
 
   // Start is called before the first frame update
   void Start() {
@@ -45,7 +46,7 @@ public class ChangeColor : MonoBehaviour {
       FillLevel += FillSpeed;
       UpdateColor();
     }
-    
+
   }
 
   void UpdateColor() {
@@ -59,5 +60,16 @@ public class ChangeColor : MonoBehaviour {
     }
     GScript.GolemPieces[ObjFillIndex].GetComponent<Renderer>().material.color = Color.Lerp(StartColor, EndColor, FillLevel);
     MP.GrowProgressBar(ObjFillIndex);
+  }
+
+  public void HitByPlayer() {
+    Debug.Log("Player Hit!");
+    int NewFillIndex = ObjFillIndex - PlayerHitPenalty;
+    while (ObjFillIndex > NewFillIndex && ObjFillIndex >= 0) {
+      GScript.GolemPieces[ObjFillIndex].GetComponent<Renderer>().material.color = StartColor;
+      ObjFillIndex--;
+    }
+
+    FillLevel = 0f;
   }
 }

@@ -2,38 +2,46 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Controller : MonoBehaviour
-{
+public class PlayerController : MonoBehaviour {
+
   public Camera Camera;
 
-  public float Speed = 250f;
-  public float RotationSpeed = 55f;
+  public float PlayerSpeed = 25f;
+  public float RotationSpeed = 35f;
   public float MaxSpeed = 12f;
   public float JumpHeight = 0.3f;
   public float Magnitude;
-
-  public float moveHorizontal;
-  public float moveVertical;
 
   private ChangeColor CC;
   private Rigidbody RB;
   private bool IsGrounded;
 
-  private void Start() {
+  // Start is called before the first frame update
+  void Start() {
     IsGrounded = true;
     RB = GetComponent<Rigidbody>();
     CC = GetComponent<ChangeColor>();
   }
 
-  void FixedUpdate() {
-    moveHorizontal = Input.GetAxis("Horizontal");
-    moveVertical = Input.GetAxis("Vertical");
-
-    Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
+  void Update() {
 
     // position
-    RB.AddForce(Camera.transform.TransformDirection(movement) * Speed * Time.deltaTime);
-    
+    Vector3 Movement = transform.position;
+    if (Input.GetKey(KeyCode.W)) {
+      // Movement.z += PlayerSpeed * Time.deltaTime;
+      transform.position += transform.TransformDirection(Vector3.forward) * PlayerSpeed * Time.deltaTime;
+    }
+    if (Input.GetKey(KeyCode.S)) {
+      transform.position += transform.TransformDirection(Vector3.back) * PlayerSpeed * Time.deltaTime;
+    }
+    if (Input.GetKey(KeyCode.A)) {
+      transform.position += transform.TransformDirection(Vector3.left) * PlayerSpeed * Time.deltaTime;
+    }
+    if (Input.GetKey(KeyCode.D)) {
+      transform.position += transform.TransformDirection(Vector3.right) * PlayerSpeed * Time.deltaTime;
+    }
+
+    Vector3 Rotation = transform.rotation.eulerAngles;
     // rotation
     if (Input.GetKey(KeyCode.Q)) {
       transform.Rotate(Vector3.up * RotationSpeed * Time.deltaTime);
@@ -42,10 +50,6 @@ public class Controller : MonoBehaviour
       transform.Rotate(Vector3.up * -RotationSpeed * Time.deltaTime);
     }
 
-
-  }
-
-  private void Update() {
     Jump();
     Magnitude = RB.velocity.magnitude;
     if (Magnitude > MaxSpeed) {
@@ -72,7 +76,5 @@ public class Controller : MonoBehaviour
       CC.HitByPlayer();
       StartCoroutine(Camera.GetComponent<CameraShake>().Shake(.2f, RB.velocity.magnitude * 0.2f));
     }
-
-
   }
 }

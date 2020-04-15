@@ -7,7 +7,7 @@ public class CameraController : MonoBehaviour {
   public GameObject Player;
 
   [Range(35f,75f)]
-  public float RotationSpeed = 50f;
+  public float RotationSpeed = 35f;
 
   private Vector3 Offset;
   // Start is called before the first frame update
