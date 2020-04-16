@@ -6,6 +6,8 @@ TagManager:
   tags:
   - ground
   - UI
+  - PowerUpActive
+  - PowerUpInactive
   layers:
   - Default
   - TransparentFX

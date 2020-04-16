@@ -7,9 +7,11 @@ public class Controller : MonoBehaviour
 {
   public Camera Camera;
 
-  public float Speed = 250f;
+  public float Speed = 25f;
   public float RotationSpeed = 55f;
   public float MaxSpeed = 12f;
+  public float BoostSpeed = 50f;
+  private bool Boost = false;
   public float JumpHeight = 0.3f;
   public float Magnitude;
 
@@ -33,7 +35,7 @@ public class Controller : MonoBehaviour
     Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
 
     // position
-    RB.AddForce(Camera.transform.TransformDirection(movement) * Speed * Time.deltaTime);
+    RB.AddForce(Camera.transform.TransformDirection(movement) * Speed * 10 * Time.deltaTime);
     
     // rotation
     if (Input.GetKey(KeyCode.Q)) {
@@ -46,6 +48,16 @@ public class Controller : MonoBehaviour
 
     }
 
+    //  boost
+    if (Input.GetMouseButton(1)) {
+      Debug.Log("BOOOST!");
+      Boost = true;
+      RB.AddForce(Camera.transform.TransformDirection(movement) * BoostSpeed * 10 * Time.deltaTime);
+    }
+
+    if (Input.GetMouseButtonUp(1)) {
+      Boost = false;
+    }
 
 
   }
@@ -56,8 +68,10 @@ public class Controller : MonoBehaviour
       Jump();
     }
     Magnitude = RB.velocity.magnitude;
-    if (Magnitude > MaxSpeed) {
+    if (!Boost && Magnitude > MaxSpeed) {
       RB.velocity = Vector3.ClampMagnitude(RB.velocity, MaxSpeed);
+    } else if(Boost && Magnitude > MaxSpeed * 2){
+      RB.velocity = Vector3.ClampMagnitude(RB.velocity, MaxSpeed * 2);
     }
 
   }
@@ -77,7 +91,7 @@ public class Controller : MonoBehaviour
     // hits another player
     if (collision.gameObject.tag == "Player") {
       CC.HitByPlayer();
-      CameraShaker.Instance.ShakeOnce(4f * RB.velocity.magnitude, 4f, .1f, 1f * RB.velocity.magnitude / 2);
+      CameraShaker.Instance.ShakeOnce(4f * RB.velocity.magnitude / 2, 4f, .1f, 1f * RB.velocity.magnitude / 4);
     }
 
 
