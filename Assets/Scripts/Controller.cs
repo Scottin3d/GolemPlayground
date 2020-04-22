@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using EZCameraShake;
 
-public class Controller : MonoBehaviour
-{
+public class Controller : MonoBehaviour {
   public Camera Camera;
 
   public float Speed = 25f;
@@ -18,14 +18,22 @@ public class Controller : MonoBehaviour
   public float moveHorizontal;
   public float moveVertical;
 
-  private ChangeColor CC;
-  private Rigidbody RB;
+  private ChangeColor colorChange;
+  private Rigidbody rigidBody;
+  private PlayerBehavior playerBehavior;
   private bool IsGrounded;
+
+  //public int PowerUpCount = 0;
+
+  // item pick ups
+  public UnityEngine.UI.Text txt;
 
   private void Start() {
     IsGrounded = true;
-    RB = GetComponent<Rigidbody>();
-    CC = GetComponent<ChangeColor>();
+    rigidBody = GetComponent<Rigidbody>();
+    colorChange = GetComponent<ChangeColor>();
+    playerBehavior = GetComponent<PlayerBehavior>();
+    txt = GetComponent<Text>();
   }
 
   void FixedUpdate() {
@@ -35,8 +43,8 @@ public class Controller : MonoBehaviour
     Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
 
     // position
-    RB.AddForce(Camera.transform.TransformDirection(movement) * Speed * 10 * Time.deltaTime);
-    
+    rigidBody.AddForce(Camera.transform.TransformDirection(movement) * Speed * 10 * Time.deltaTime);
+
     // rotation
     if (Input.GetKey(KeyCode.Q)) {
       transform.Rotate(Vector3.up * -RotationSpeed * Time.deltaTime);
@@ -48,18 +56,23 @@ public class Controller : MonoBehaviour
 
     }
 
-    //  boost
-    if (Input.GetMouseButton(1)) {
-      Debug.Log("BOOOST!");
-      Boost = true;
-      RB.AddForce(Camera.transform.TransformDirection(movement) * BoostSpeed * 10 * Time.deltaTime);
+    /*
+    Boost
+    */
+    if (Input.GetMouseButtonDown(1)) {
+      int PowerUpCount = playerBehavior.GetPowerUpCount();
+      if (PowerUpCount > 0) {
+        Debug.Log("BOOOST!");
+        rigidBody.AddForce(Camera.transform.TransformDirection(movement) * BoostSpeed * 100);
+        playerBehavior.UsePowerUp();
+        Boost = true;
+      }
     }
-
     if (Input.GetMouseButtonUp(1)) {
       Boost = false;
     }
 
-
+    //txt.text = PowerUpCount.ToString();
   }
 
   private void Update() {
@@ -67,17 +80,16 @@ public class Controller : MonoBehaviour
     if (Input.GetKeyDown(KeyCode.Space) && IsGrounded) {
       Jump();
     }
-    Magnitude = RB.velocity.magnitude;
+    Magnitude = rigidBody.velocity.magnitude;
     if (!Boost && Magnitude > MaxSpeed) {
-      RB.velocity = Vector3.ClampMagnitude(RB.velocity, MaxSpeed);
-    } else if(Boost && Magnitude > MaxSpeed * 2){
-      RB.velocity = Vector3.ClampMagnitude(RB.velocity, MaxSpeed * 2);
+      rigidBody.velocity = Vector3.ClampMagnitude(rigidBody.velocity, MaxSpeed);
+    } else if (Boost && Magnitude > MaxSpeed * 2) {
+      rigidBody.velocity = Vector3.ClampMagnitude(rigidBody.velocity, MaxSpeed * 2);
     }
-
   }
 
   void Jump() {
-    RB.AddForce(Vector3.up * JumpHeight * 1000);
+    rigidBody.AddForce(Vector3.up * JumpHeight * 1000);
     IsGrounded = false;
   }
 
@@ -85,15 +97,13 @@ public class Controller : MonoBehaviour
     // hits ground after jump
     if (collision.gameObject.tag == "ground" && IsGrounded == false) {
       IsGrounded = true;
-      RB.velocity = Vector3.ClampMagnitude(RB.velocity, 3f);
+      rigidBody.velocity = Vector3.ClampMagnitude(rigidBody.velocity, 3f);
     }
 
     // hits another player
     if (collision.gameObject.tag == "Player") {
-      CC.HitByPlayer();
-      CameraShaker.Instance.ShakeOnce(4f * RB.velocity.magnitude / 2, 4f, .1f, 1f * RB.velocity.magnitude / 4);
+      colorChange.HitByPlayer();
+      CameraShaker.Instance.ShakeOnce(4f * rigidBody.velocity.magnitude / 2, 4f, .1f, 1f * rigidBody.velocity.magnitude / 4);
     }
-
-
   }
 }

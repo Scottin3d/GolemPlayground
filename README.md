@@ -15,6 +15,7 @@ the player controller.  A golem is a rock-troll like creature.  Various versions
 ## Links
 ### Website
 You can follow progress in more detail on my website: https://scottshirley.dev  
+
 ### GitHub
 You can follow this project on GitHub: https://github.com/Scottin3d/GolemPlayground  
 

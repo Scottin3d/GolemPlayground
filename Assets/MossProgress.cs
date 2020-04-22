@@ -14,9 +14,24 @@ public class MossProgress : MonoBehaviour {
 
   }
 
-  public void GrowProgressBar(int Fill) {
+  
 
-    slider.value = Fill;
-    Debug.Log("PB increased.");
+  // public void GrowProgressBar(int Fill) {
+  public void AddScore() {
+    // legacy
+    // slider.value = Fill;
+    slider.value++;
+
+    Debug.Log("Score increased.");
   }
+
+  public void SubtractScore() {
+    // legacy
+    // slider.value = Fill;
+    slider.value--;
+
+    Debug.Log("Score Decreased.");
+  }
+
+
 }

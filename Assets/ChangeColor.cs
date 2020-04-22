@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ChangeColor : MonoBehaviour {
-  GollemScript GScript;
+  private GollemScript GScript;
   int ObjCount = 0;
   int ObjFillIndex = 0;
 
-  public MossProgress MP;
+  private UI_API UIAPI;
+  // public MossProgress MP;
 
   public Color StartColor = Color.white;
   public Color EndColor = Color.green;
@@ -19,9 +20,11 @@ public class ChangeColor : MonoBehaviour {
 
   // Start is called before the first frame update
   void Start() {
+    UIAPI = this.GetComponent<UI_API>();
     GScript = this.GetComponent<GollemScript>();
     ObjCount = GScript.GetSize();
-    MP.SetMaxValue(ObjCount);
+    UIAPI.SetMaxScore(ObjCount);
+    // MP.SetMaxValue(ObjCount);
   }
 
   // Update is called once per frame
@@ -55,6 +58,7 @@ public class ChangeColor : MonoBehaviour {
       if (ObjFillIndex < ObjCount - 1) {
         Debug.Log(ObjFillIndex);
         ObjFillIndex++;
+        UIAPI.AddScore();
       } else {
         ObjFillIndex = ObjCount - 1;
         Debug.Log("Player won!");
@@ -63,7 +67,8 @@ public class ChangeColor : MonoBehaviour {
       FillLevel = 0f;
     }
     GScript.GolemPieces[ObjFillIndex].GetComponent<Renderer>().material.color = Color.Lerp(StartColor, EndColor, FillLevel);
-    MP.GrowProgressBar(ObjFillIndex + 1);
+    
+    //MP.GrowProgressBar(ObjFillIndex + 1);
   }
 
   public void HitByPlayer() {
@@ -74,7 +79,9 @@ public class ChangeColor : MonoBehaviour {
     while (ObjFillIndex > NewFillIndex && ObjFillIndex >= 0) {
       GScript.GolemPieces[ObjFillIndex].GetComponent<Renderer>().material.color = StartColor;
       ObjFillIndex--;
-      MP.GrowProgressBar(ObjFillIndex + 1);
+      UIAPI.SubtractScore();
+
+      //MP.GrowProgressBar(ObjFillIndex + 1);
     }
 
     FillLevel = 0f;

@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEditor;
 using System.Linq;
 
+/*
+ This script generates the player geometry
+ */
 public class GollemScript : MonoBehaviour {
 
   public GameObject BaseModel;

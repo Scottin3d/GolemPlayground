@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Animate : MonoBehaviour {
   public float RotationSpeed = 45f;
@@ -10,6 +11,7 @@ public class Animate : MonoBehaviour {
   public AnimationCurve Curve;
 
   public int PowerUpRespawnTime = 5;
+  public AudioClip audioClip;
 
   private float YOffset;
   MeshRenderer MR;
@@ -39,15 +41,16 @@ public class Animate : MonoBehaviour {
   }
 
   private void OnTriggerEnter(Collider other) {
-    Collision();
-  }
+    if (other.gameObject.tag == "Player") {
+      if (Active) {
+        MR.enabled = false;
+        Active = false;
+        StartCoroutine(Dissappear());
 
-  void Collision() {
-    if (Active) {
-      MR.enabled = false;
-      Active = false;
-      StartCoroutine(Dissappear());
+      }
+
     }
+
   }
 
   IEnumerator Dissappear() {
