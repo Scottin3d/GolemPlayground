@@ -25,15 +25,11 @@ public class Controller : MonoBehaviour {
 
   //public int PowerUpCount = 0;
 
-  // item pick ups
-  public UnityEngine.UI.Text txt;
-
   private void Start() {
     IsGrounded = true;
     rigidBody = GetComponent<Rigidbody>();
     colorChange = GetComponent<ChangeColor>();
     playerBehavior = GetComponent<PlayerBehavior>();
-    txt = GetComponent<Text>();
   }
 
   void FixedUpdate() {

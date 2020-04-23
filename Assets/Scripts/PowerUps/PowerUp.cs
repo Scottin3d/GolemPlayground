@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PowerUp : MonoBehaviour {
-  public PlayerBehavior playerBehavior;
 
   private void OnTriggerEnter(Collider other) {
-    PowerUpCollide();
+    PlayerBehavior playerBehavior = other.GetComponent<PlayerBehavior>();
+    if (playerBehavior != null) {
+      PowerUpCollide(playerBehavior);
+    }
   }
 
-  private void PowerUpCollide() {
+  private void PowerUpCollide(PlayerBehavior playerBehavior) {
     playerBehavior.AddPowerUp();
   }
 }

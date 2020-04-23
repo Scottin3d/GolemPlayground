@@ -3,16 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-
 public class UI_API : MonoBehaviour {
-
+  Canvas UI;
   // power up text box
-  public Text txt;
+  Text txt;
 
   // progress bar
-  public MossProgress MP;
+  MossProgress MP;
 
   private void Start() {
+    UI = GameObject.Find("Canvas").GetComponent<Canvas>();
+    txt = UI.transform.Find("PowerUpCounter").GetComponent<Text>();
+    MP = UI.transform.Find("ProgressBar").GetComponent<MossProgress>();
     txt.text = "0";
   }
 

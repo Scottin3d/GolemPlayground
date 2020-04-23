@@ -20,13 +20,13 @@ public class GollemScript : MonoBehaviour {
 
   private int ObjCount = 0;
 
-  void Start() {
+  Material golemMaterial;
+  void Awake() {
+    //golemMaterial = Resources.Load("Materials/Gollem.mat", typeof(Material)) as Material;
     GolemPieces = new List<GameObject>();
     GenerateMesh();
     ObjCount = GolemPieces.Count;
-  }
-
-  private void Update() {
+    Debug.Log(ObjCount + " Pieces created");
   }
 
   public void GenerateMesh() {

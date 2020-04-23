@@ -23,6 +23,8 @@ public class ChangeColor : MonoBehaviour {
     UIAPI = this.GetComponent<UI_API>();
     GScript = this.GetComponent<GollemScript>();
     ObjCount = GScript.GetSize();
+    Debug.Log(ObjCount);
+
     UIAPI.SetMaxScore(ObjCount);
     // MP.SetMaxValue(ObjCount);
   }
@@ -34,18 +36,6 @@ public class ChangeColor : MonoBehaviour {
       UpdateColor();
     }
     if (Input.GetKey(KeyCode.W)) {
-      FillLevel += FillSpeed;
-      UpdateColor();
-    }
-    if (Input.GetKey(KeyCode.A)) {
-      FillLevel += FillSpeed;
-      UpdateColor();
-    }
-    if (Input.GetKey(KeyCode.S)) {
-      FillLevel += FillSpeed;
-      UpdateColor();
-    }
-    if (Input.GetKey(KeyCode.D)) {
       FillLevel += FillSpeed;
       UpdateColor();
     }
