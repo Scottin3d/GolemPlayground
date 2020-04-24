@@ -33,5 +33,9 @@ public class MossProgress : MonoBehaviour {
     Debug.Log("Score Decreased.");
   }
 
+  public void UpdateScore(int score) {
+    slider.value = score;
+  }
+
 
 }

@@ -1,9 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class TerrainGenerator : MonoBehaviour {
   Terrain terrain;
+  public Texture2D[] terrainLayers;
+
+  public int LayerCount;
+
+  public GameObject Player;
 
   [Range(0, 10)]
   public int depth = 20;
@@ -16,11 +22,18 @@ public class TerrainGenerator : MonoBehaviour {
   public float offSetX = 100f;
   public float offSetY = 100f;
 
+  public Texture2D MixMap;
+ 
   // Start is called before the first frame update
   void Start() {
     terrain = GetComponent<Terrain>();
     terrain.terrainData = GenerateTerrain(terrain.terrainData);
+    terrainLayers = terrain.terrainData.alphamapTextures;
+    LayerCount = terrainLayers.Length;
+    MixMap = terrainLayers[0];
   }
+
+
 
   public void UpdateTerrain() {
     terrain = GetComponent<Terrain>();
@@ -54,4 +67,5 @@ public class TerrainGenerator : MonoBehaviour {
 
     return sample;
   }
+
 }

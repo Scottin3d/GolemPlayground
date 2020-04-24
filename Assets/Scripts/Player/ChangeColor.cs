@@ -18,6 +18,10 @@ public class ChangeColor : MonoBehaviour {
   public float JumpCost = 0.2f;
   public int PlayerHitPenalty = 1;
 
+
+  private int scorePerChunk = 0;
+  int fillLevel = 0;
+  int fillIndex;
   // Start is called before the first frame update
   void Start() {
     UIAPI = this.GetComponent<UI_API>();
@@ -25,12 +29,13 @@ public class ChangeColor : MonoBehaviour {
     ObjCount = GScript.GetSize();
     Debug.Log(ObjCount);
 
-    UIAPI.SetMaxScore(ObjCount);
+    //UIAPI.SetMaxScore(ObjCount);
     // MP.SetMaxValue(ObjCount);
   }
 
   // Update is called once per frame
   void Update() {
+    /*
     if (Input.GetKeyDown(KeyCode.Space)) {
       FillLevel -= JumpCost;
       UpdateColor();
@@ -39,10 +44,20 @@ public class ChangeColor : MonoBehaviour {
       FillLevel += FillSpeed;
       UpdateColor();
     }
-
+    */
   }
 
-  void UpdateColor() {
+  public void SetScorePerChunk(int scorePC) {
+    scorePerChunk = scorePC;
+  }
+
+  public void UpdateColor(int playerScore) {
+    fillIndex = playerScore / scorePerChunk;
+    fillLevel = playerScore % scorePerChunk;
+    GScript.GolemPieces[fillIndex].GetComponent<Renderer>().material.color = Color.Lerp(StartColor, EndColor, fillLevel);
+
+    /*
+
     if (FillLevel >= 1.0f) {
       // temp to prevent nullreference
       if (ObjFillIndex < ObjCount - 1) {
@@ -59,6 +74,7 @@ public class ChangeColor : MonoBehaviour {
     GScript.GolemPieces[ObjFillIndex].GetComponent<Renderer>().material.color = Color.Lerp(StartColor, EndColor, FillLevel);
     
     //MP.GrowProgressBar(ObjFillIndex + 1);
+    */
   }
 
   public void HitByPlayer() {

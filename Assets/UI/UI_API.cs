@@ -11,7 +11,7 @@ public class UI_API : MonoBehaviour {
   // progress bar
   MossProgress MP;
 
-  private void Start() {
+  private void Awake() {
     UI = GameObject.Find("Canvas").GetComponent<Canvas>();
     txt = UI.transform.Find("PowerUpCounter").GetComponent<Text>();
     MP = UI.transform.Find("ProgressBar").GetComponent<MossProgress>();
@@ -28,6 +28,11 @@ public class UI_API : MonoBehaviour {
 
   public void SubtractScore() {
     MP.SubtractScore();
+  }
+
+  // new
+  public void UpdateScore(int score) {
+    MP.UpdateScore(score);
   }
 
   public void SetPowerUp(int PowerUpCount) {
