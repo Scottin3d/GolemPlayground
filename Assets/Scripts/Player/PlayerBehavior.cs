@@ -20,17 +20,17 @@ public class PlayerBehavior : MonoBehaviour {
     UIAPI = GetComponent<UI_API>();
     changeColor = GetComponent<ChangeColor>();
     golemScript = GetComponent<GollemScript>();
-    golemPieces = golemScript.GetSize();
+    
     PowerUpCount = 0;
     PlayerScore = 0;
-
 
   }
 
   private void Start() {
+    golemPieces = golemScript.GetSize();
     changeColor.SetScorePerChunk(scorePerChunk);
     UIAPI.SetMaxScore(scorePerChunk * golemPieces);
-    
+    Debug.Log("Max Progress Set to: " + scorePerChunk * golemPieces);
   }
 
   private void Update() {

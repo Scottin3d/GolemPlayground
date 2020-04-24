@@ -7,7 +7,6 @@ public class UI_API : MonoBehaviour {
   Canvas UI;
   // power up text box
   Text txt;
-
   // progress bar
   MossProgress MP;
 
@@ -22,15 +21,6 @@ public class UI_API : MonoBehaviour {
     MP.SetMaxValue(MaxScore);
   }
 
-  public void AddScore() {
-    MP.AddScore();
-  }
-
-  public void SubtractScore() {
-    MP.SubtractScore();
-  }
-
-  // new
   public void UpdateScore(int score) {
     MP.UpdateScore(score);
   }

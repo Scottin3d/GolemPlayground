@@ -11,16 +11,19 @@ public class PlayerController : MonoBehaviour {
   public float MaxSpeed = 12f;
   public float JumpHeight = 0.3f;
   public float Magnitude;
-
-  private ChangeColor CC;
-  private Rigidbody RB;
+  
+  PlayerBehavior playerBehavior;
+  private Rigidbody rigidbody;
   private bool IsGrounded;
 
+  private void Awake() {
+    playerBehavior = GetComponent<PlayerBehavior>();
+    rigidbody = GetComponent<Rigidbody>();
+
+  }
   // Start is called before the first frame update
   void Start() {
     IsGrounded = true;
-    RB = GetComponent<Rigidbody>();
-    CC = GetComponent<ChangeColor>();
   }
 
   void Update() {
@@ -51,15 +54,15 @@ public class PlayerController : MonoBehaviour {
     }
 
     Jump();
-    Magnitude = RB.velocity.magnitude;
+    Magnitude = rigidbody.velocity.magnitude;
     if (Magnitude > MaxSpeed) {
-      RB.velocity = Vector3.ClampMagnitude(RB.velocity, MaxSpeed);
+      rigidbody.velocity = Vector3.ClampMagnitude(rigidbody.velocity, MaxSpeed);
     }
   }
 
   void Jump() {
     if (Input.GetKeyDown(KeyCode.Space) && IsGrounded) {
-      RB.AddForce(Vector3.up * JumpHeight * 1000);
+      rigidbody.AddForce(Vector3.up * JumpHeight * 1000);
       IsGrounded = false;
     }
   }
@@ -68,13 +71,13 @@ public class PlayerController : MonoBehaviour {
     // hits ground after jump
     if (collision.gameObject.tag == "ground" && IsGrounded == false) {
       IsGrounded = true;
-      RB.velocity = Vector3.ClampMagnitude(RB.velocity, 3f);
+      rigidbody.velocity = Vector3.ClampMagnitude(rigidbody.velocity, 3f);
     }
 
     // hits another player
     if (collision.gameObject.tag == "Player") {
-      CC.HitByPlayer();
-      StartCoroutine(Camera.GetComponent<CameraShake>().Shake(.2f, RB.velocity.magnitude * 0.2f));
+      playerBehavior.HitPlayer();
+      StartCoroutine(Camera.GetComponent<CameraShake>().Shake(.2f, rigidbody.velocity.magnitude * 0.2f));
     }
   }
 }

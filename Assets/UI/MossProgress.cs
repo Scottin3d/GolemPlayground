@@ -10,27 +10,7 @@ public class MossProgress : MonoBehaviour {
 
   public void SetMaxValue(int MaxFill) {
     slider.maxValue = MaxFill;
-    Debug.Log("Max Progress Set to: " + MaxFill);
 
-  }
-
-  
-
-  // public void GrowProgressBar(int Fill) {
-  public void AddScore() {
-    // legacy
-    // slider.value = Fill;
-    slider.value++;
-
-    Debug.Log("Score increased.");
-  }
-
-  public void SubtractScore() {
-    // legacy
-    // slider.value = Fill;
-    slider.value--;
-
-    Debug.Log("Score Decreased.");
   }
 
   public void UpdateScore(int score) {
