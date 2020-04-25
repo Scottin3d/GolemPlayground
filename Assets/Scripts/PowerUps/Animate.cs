@@ -42,7 +42,8 @@ public class Animate : MonoBehaviour {
 
   private void OnTriggerEnter(Collider other) {
     if (other.gameObject.tag == "Player") {
-      if (Active) {
+      bool collect = other.gameObject.GetComponent<PlayerBehavior>().CanCollect();
+      if (Active && collect) {
         MR.enabled = false;
         Active = false;
         StartCoroutine(Dissappear());

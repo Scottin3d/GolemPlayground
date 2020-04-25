@@ -8,12 +8,12 @@ public class PlayerBehavior : MonoBehaviour {
   public int scorePerChunk = 100;
 
 
-
   private UI_API UIAPI;
   private ChangeColor changeColor;
   private GollemScript golemScript;
   private int golemPieces;
   private int PowerUpCount;
+  private int MaxPowerUpCount = 3;
   public int PlayerScore;
   // Start is called before the first frame update
   private void Awake() {
@@ -23,7 +23,6 @@ public class PlayerBehavior : MonoBehaviour {
     
     PowerUpCount = 0;
     PlayerScore = 0;
-
   }
 
   private void Start() {
@@ -42,13 +41,16 @@ public class PlayerBehavior : MonoBehaviour {
     UIAPI.SetMaxScore(maxScore);
   }
 
+  // power ups
   public void UsePowerUp() {
     PowerUpCount--;
     UIAPI.SetPowerUp(PowerUpCount);
   }
 
   public void AddPowerUp() {
-    PowerUpCount++;
+    if (PowerUpCount < MaxPowerUpCount) {
+      PowerUpCount++;
+    }
     UIAPI.SetPowerUp(PowerUpCount);
   }
 
@@ -56,18 +58,29 @@ public class PlayerBehavior : MonoBehaviour {
     return PowerUpCount;
   }
 
+  public bool CanCollect() {
+    return PowerUpCount != 3;
+  }
+
+  // UI add score
   public void AddScore() {
     PlayerScore++;
     UIAPI.UpdateScore(PlayerScore);
   }
 
+
+  // hit players
   public void HitPlayer() {
     PlayerScore -= HitPlayerCost;
     UIAPI.UpdateScore(PlayerScore);
   }
 
   public void HitByPlayer() {
-    PlayerScore -= PlayerHitCost;
+    if (PlayerScore < PlayerHitCost) {
+      PlayerScore = 0;
+    } else {
+      PlayerScore -= PlayerHitCost;
+    }
     UIAPI.UpdateScore(PlayerScore);
   }
 }

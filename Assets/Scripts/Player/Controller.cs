@@ -7,16 +7,19 @@ using EZCameraShake;
 public class Controller : MonoBehaviour {
   public Camera Camera;
 
-  public float Speed = 25f;
-  public float RotationSpeed = 55f;
-  public float MaxSpeed = 12f;
-  public float boostSpeed = 50f;
+  private float Speed = 55f;
+  private float RotationSpeed = 55f;
+  private float MaxSpeed = 12f;
+  private float boostSpeed = 50f;
   private bool boost;
-  public float JumpHeight = 0.3f;
-  public float Magnitude;
+  private float JumpHeight = 0.3f;
+  private float Magnitude;
 
-  public float moveHorizontal;
-  public float moveVertical;
+  private float moveHorizontal;
+  private float moveVertical;
+
+  private float rotateHorizontal;
+  private float rotateVertical;
 
   private Rigidbody rigidBody;
   private PlayerBehavior playerBehavior;
@@ -34,11 +37,19 @@ public class Controller : MonoBehaviour {
   void FixedUpdate() {
     moveHorizontal = Input.GetAxis("Horizontal");
     moveVertical = Input.GetAxis("Vertical");
-
     Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
 
     // position
     rigidBody.AddForce(Camera.transform.TransformDirection(movement) * Speed * 10 * Time.deltaTime);
+
+    rotateHorizontal = Input.GetAxis("HorizontalTurn");
+    rotateVertical = Input.GetAxis("VerticalTurn");
+    Vector3 rotation = new Vector3(rotateHorizontal, rotateVertical, 0);
+    
+
+    transform.Rotate(rotation);
+
+
 
     // rotation
     if (Input.GetKey(KeyCode.Q)) {
@@ -46,15 +57,15 @@ public class Controller : MonoBehaviour {
       Camera.transform.RotateAround(transform.position, Vector3.up, -RotationSpeed * Time.deltaTime);
     }
     if (Input.GetKey(KeyCode.E)) {
-      transform.Rotate(Vector3.up * RotationSpeed * Time.deltaTime);
-      Camera.transform.RotateAround(transform.position, Vector3.up, RotationSpeed * Time.deltaTime);
+      transform.Rotate(Vector3.up * rotateHorizontal * Time.deltaTime);
+      Camera.transform.RotateAround(transform.position, Vector3.up, rotateHorizontal * Time.deltaTime);
 
     }
 
     /*
     Boost
     */
-    if (Input.GetMouseButtonDown(1)) {
+    if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.JoystickButton5)) {
       int PowerUpCount = playerBehavior.GetPowerUpCount();
       if (PowerUpCount > 0) {
         Debug.Log("BOOOST!");
@@ -63,16 +74,14 @@ public class Controller : MonoBehaviour {
         boost = true;
       }
     }
-    if (Input.GetMouseButtonUp(1)) {
+    if (Input.GetMouseButtonUp(1) || Input.GetKeyUp(KeyCode.JoystickButton5)) {
       boost = false;
     }
-
-    //txt.text = PowerUpCount.ToString();
   }
 
   private void Update() {
     // jump
-    if (Input.GetKeyDown(KeyCode.Space) && IsGrounded) {
+    if (Input.GetKeyDown(KeyCode.JoystickButton0) && IsGrounded) {
       Jump();
     }
     Magnitude = rigidBody.velocity.magnitude;

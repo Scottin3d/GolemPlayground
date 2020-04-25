@@ -6,7 +6,7 @@ public class PowerUp : MonoBehaviour {
 
   private void OnTriggerEnter(Collider other) {
     PlayerBehavior playerBehavior = other.GetComponent<PlayerBehavior>();
-    if (playerBehavior != null) {
+    if (playerBehavior != null && playerBehavior.CanCollect()) {
       PowerUpCollide(playerBehavior);
     }
   }
