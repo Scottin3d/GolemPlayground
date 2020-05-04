@@ -30,7 +30,7 @@ public class Grass : MonoBehaviour
         }
         Active = false;
         StartCoroutine(Dissappear());
-        playerBehavior.AddScore();
+        //playerBehavior.AddScore();
       }
 
     }
